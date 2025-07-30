@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anime Strength - Higher or Lower</title>
+    <style>
+        body { font-family: Arial; background: #111; color: #fff; text-align: center; padding: 50px; }
+        .card { background: #222; padding: 20px; margin: 20px auto; border-radius: 10px; width: 300px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🔥 Anime Strength: Higher or Lower</h1>
+    <div class="card" id="characterA"></div>
+    <div>
+        <button onclick="guess('higher')">Higher</button>
+        <button onclick="guess('lower')">Lower</button>
+    </div>
+    <div class="card" id="characterB" style="display: none;"></div>
+    <h2 id="result"></h2>
+    <script>
+        const characters = [{'name': 'Goku', 'anime': 'Dragon Ball', 'strength_score': 100}, {'name': 'Saitama', 'anime': 'One Punch Man', 'strength_score': 99}, {'name': 'Zeno', 'anime': 'Dragon Ball', 'strength_score': 1000}, {'name': 'Gojo Satoru', 'anime': 'Jujutsu Kaisen', 'strength_score': 94}, {'name': 'Sukuna', 'anime': 'Jujutsu Kaisen', 'strength_score': 92}, {'name': 'Naruto (Baryon Mode)', 'anime': 'Naruto', 'strength_score': 97}, {'name': 'Sasuke', 'anime': 'Naruto', 'strength_score': 92}, {'name': 'Ichigo Kurosaki', 'anime': 'Bleach', 'strength_score': 90}, {'name': 'Aizen', 'anime': 'Bleach', 'strength_score': 91}, {'name': 'Madara Uchiha', 'anime': 'Naruto', 'strength_score': 94}, {'name': 'Meliodas', 'anime': 'Seven Deadly Sins', 'strength_score': 93}, {'name': 'Escanor (Noon)', 'anime': 'Seven Deadly Sins', 'strength_score': 95}, {'name': 'Luffy (Gear 5)', 'anime': 'One Piece', 'strength_score': 96}, {'name': 'Kaido', 'anime': 'One Piece', 'strength_score': 94}, {'name': 'Eren Yeager (Founding Titan)', 'anime': 'Attack on Titan', 'strength_score': 91}, {'name': 'Mob', 'anime': 'Mob Psycho 100', 'strength_score': 92}, {'name': 'Tatsumaki', 'anime': 'One Punch Man', 'strength_score': 89}, {'name': 'Kenshiro', 'anime': 'Fist of the North Star', 'strength_score': 88}, {'name': 'Ryuk', 'anime': 'Death Note', 'strength_score': 93}, {'name': 'Kaguya Ōtsutsuki', 'anime': 'Naruto', 'strength_score': 98}];
+        let currentA, currentB;
+
+        function pickRandomCharacter(exclude) {
+            let pick;
+            do {
+                pick = characters[Math.floor(Math.random() * characters.length)];
+            } while (pick === exclude);
+            return pick;
+        }
+
+        function showCharacter(id, character, hideStrength = false) {
+            const div = document.getElementById(id);
+            div.innerHTML = `
+                <h2>${character.name}</h2>
+                <h4>Anime: ${character.anime}</h4>
+                ${!hideStrength ? `<p>Strength: ${character.strength_score}</p>` : `<p>Strength: ???</p>`}
+            `;
+            div.style.display = 'block';
+        }
+
+        function setup() {
+            document.getElementById('result').innerText = '';
+            currentA = pickRandomCharacter();
+            currentB = pickRandomCharacter(currentA);
+            showCharacter('characterA', currentA);
+            showCharacter('characterB', currentB, true);
+        }
+
+        function guess(choice) {
+            const isCorrect = (choice === 'higher' && currentB.strength_score > currentA.strength_score) ||
+                              (choice === 'lower' && currentB.strength_score < currentA.strength_score);
+
+            showCharacter('characterB', currentB, false);
+            document.getElementById('result').innerText = isCorrect ? '✅ Correct!' : '❌ Wrong!';
+            setTimeout(setup, 2000);
+        }
+
+        setup();
+    </script>
+</body>
+</html>
